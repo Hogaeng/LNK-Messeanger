@@ -1,7 +1,13 @@
 
 public class Packet {
-	public static final String PK_JOIN_REQ = "JOIN_REQ";
-	public static final String PK_JOIN_ACK = "JOIN_ACK";
+	public static final String JOIN_REQ = "JOIN_REQ";
+	public static final String JOIN_ACK = "JOIN_ACK";
+	
+	public static final String LOG_REQ = "LOG_REQ";
+	public static final String LOG_ACK = "LOG_ACK";
+	
+	public static final String MSS_REQ = "MSS_REQ";
+	public static final String MSS_ACK = "MSS_ACK";
 	
 	public static final String FIELD_DELIM = "|";
 	public static final String PK_DELIM = "?";
@@ -17,10 +23,6 @@ public class Packet {
 		this.data = data;
 	}
 
-	
-	
-	
-	
 	public String getType() {
 		return type;
 	}

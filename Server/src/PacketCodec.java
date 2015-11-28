@@ -1,9 +1,9 @@
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class PacketCodec {
-
 	public static String readDelimiter(BufferedReader in) throws IOException{
 		char charBuf[] = new char[1];
 		String readMsg = "";
@@ -13,31 +13,31 @@ public class PacketCodec {
 		String strSize = "";
 		
 		// read character before packet delimiter
-		while(in.read(charBuf, 0, 1) != -1){//버퍼리더 in의 문자를 하나 읽어 charBuf에 하나 집어넣는다..
+		while(in.read(charBuf, 0, 1) != -1){
 			if(!isFirstDelimAppear){
 				// read size of packet
-				if(Packet.FIELD_DELIM.charAt(0) != charBuf[0]){//'|'와 같지 않으면
-					strSize += charBuf[0];//스트링에 넣는다
+				if(Packet.FIELD_DELIM.charAt(0) != charBuf[0]){
+					strSize += charBuf[0];
 				}
-				else{// '|' 라면
-					totalSize = Integer.parseInt(strSize);//지금까지 버퍼리더에서 받아온 String를 int로 바꾸어 토탈사이즈에 넣는다.
-					if( totalSize >= 1){//토탈사이즈는 1보다 크거나 같으면
-						size = 1;//사이즈는 1이라고 한다.
-					}else{//아무것도 없다는 듯이다
-						size = totalSize;//사이즈는 0 또는 음수
+				else{
+					totalSize = Integer.parseInt(strSize);
+					if( totalSize >= 1){
+						size = 1;
+					}else{
+						size = totalSize;
 					}
-					charBuf = new char[size];//새로운 char을 지정한다. size가 0이나 음수면? totalSize가 처음부터 '|'을 받을 일이 없기 때문인가?
-					isFirstDelimAppear = true;//첫 '|'를 만났으므로 다음 구분자 '?'을 찾는다
+					charBuf = new char[size];
+					isFirstDelimAppear = true;
 				}
 			}
 			// Packet.PK_DELIM == '?'
 			else if(charBuf[0] == '?'){
-				readMsg += charBuf[0];//readMsg에 '?'를 추가한다.
+				readMsg += charBuf[0];
 				isdelim = 1;
 				break;
 			} else {
 				readMsg += charBuf[0];
-				totalSize -= size;//토탈사이즈에 1만큼 빼준다. 토탈사이즈는 처음 받아들인 String을 int형으로 바꾼것을 의미한다. 
+				totalSize -= size;
 				continue;
 			}
 		}
@@ -57,6 +57,7 @@ public class PacketCodec {
 		return readMsg;
 	}
 	
+
 	public static Packet decodeHeader(String src) throws IOException{
 		String type, data;
 		int size;
@@ -70,4 +71,74 @@ public class PacketCodec {
 		
 		return new Packet(type, data);
 	}
+	
+	// About join request
+	// Dncode join request packet data
+	public static String encodeJoinReq(JoinReq pk_data){
+		String data = Packet.JOIN_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getName() 
+				+ Packet.FIELD_DELIM + pk_data.getId()
+				+ Packet.FIELD_DELIM + pk_data.getPassword()
+				+ Packet.FIELD_DELIM
+				+ Packet.PK_DELIM;
+				
+		return data;
+	}
+	
+	public static String encodeLoginReq(LoginReq pk_data){
+		String data = Packet.LOG_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getId()
+				+ Packet.FIELD_DELIM + pk_data.getPassword()
+				+ Packet.FIELD_DELIM 
+				+ Packet.PK_DELIM;
+		
+		return data;
+	}
+	
+	public static String encodeMssReq(MssReq pk_data){
+		String data = Packet.MSS_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getMessage()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+		
+		return data;
+	}
+	
+	
+	
+	// Decode join response packet data
+	/*public static JoinAck decodeJoinAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		JoinAck dst = new JoinAck();
+		
+		dst.setResult(s.nextInt());
+		
+		return dst;
+	}*/
+	
+	// About login request
+	// Encode login request
+	
+	
+	
+	
+
+	// Decode login response packet data
+	/*public static LoginAck decodeLoginAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		LoginAck dst = new LoginAck();
+		
+		dst.setResult(s.nextInt());
+		if(dst.getResult() == Packet.SUCCESS)
+		{
+			dst.setName(s.next());
+			dst.setJob(s.next());
+			dst.setGender(s.next());
+			dst.setCountry(s.next());
+			dst.setProfile_img(s.next());
+		}
+		return dst;
+	}*/
+	
+	
 }
