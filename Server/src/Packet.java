@@ -1,4 +1,3 @@
-
 public class Packet {
 	public static final String JOIN_REQ = "JOIN_REQ";
 	public static final String JOIN_ACK = "JOIN_ACK";
