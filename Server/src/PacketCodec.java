@@ -3,7 +3,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Scanner;
 
+
 public class PacketCodec {
+	
 	public static String readDelimiter(BufferedReader in) throws IOException{
 		char charBuf[] = new char[1];
 		String readMsg = "";
@@ -89,10 +91,41 @@ public class PacketCodec {
 		String data = Packet.LOG_REQ 
 				+ Packet.FIELD_DELIM + pk_data.getId()
 				+ Packet.FIELD_DELIM + pk_data.getPassword()
-				+ Packet.FIELD_DELIM 
+				+ Packet.FIELD_DELIM
 				+ Packet.PK_DELIM;
 		
 		return data;
+	}
+
+	public static LoginReq decodeLoginReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		LoginReq dst = new LoginReq();
+
+		dst.setId(s.next());
+		dst.setPassword(s.next());
+
+		return dst;
+	}
+	
+	public static String encodeLoginAck(LoginAck pk_data){
+		String data = Packet.LOG_ACK + Packet.FIELD_DELIM
+				+ Integer.toString(pk_data.getAnswer()) + Packet.FIELD_DELIM;
+		
+		/*if (pk_data.getAnswer() == Packet.SUCCESS){
+		}*/
+		
+		data += Packet.PK_DELIM;	
+		
+		return data;
+	}
+
+	public static LoginAck decodeLoginAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		LoginAck dst = new LoginAck();
+
+		dst.setAnswer(s.nextInt());
+
+		return dst;
 	}
 	
 	public static String encodeMssReq(MssReq pk_data){
