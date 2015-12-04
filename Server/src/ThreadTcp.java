@@ -14,8 +14,8 @@ public class ThreadTcp implements Runnable{
 
 
 	
-	//private Base64Codec bs64 = new Base64Codec();//이미지 맵핑
-	private Socket clientSocket = null;//클라이언트 소켓이지만 서버 소켓도 들어간다
+	//private Base64Codec bs64 = new Base64Codec();//
+	private Socket clientSocket = null;//
 	
 	private PrintWriter out = null;
 	private BufferedReader in = null;
@@ -47,19 +47,19 @@ public class ThreadTcp implements Runnable{
 	
 	public void run(){
 		try{
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//클라이언트가 보내준 인풋 스트림을 리더로 읽어들여 새로운 버퍼 생성해 넣는다.
+			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			
 			while(isContinous){
 				// read packet and decode
 				
-				rcvPacket = PacketCodec.decodeHeader(inputData);//그렇게 나온 패킷데이터(String)를 한번 더 코덱에 넣어 헤더를 디코드 한다. 나온것은 Packet.
-				isContinous = handler(rcvPacket, out);//최종적으로 handler에 Packet과 PrintWriter를 넣어 오류가 났는지 여부를 확인한다. 
-			}//오류로 true를 내뱉으면 false를 내뱉을때까지 계속 실행한다.
+				rcvPacket = PacketCodec.decodeHeader(inputData);//
+				isContinous = handler(rcvPacket, out);// 
+			}//
 
 			in.close();
 			out.close();
-			clientSocket.close();//TCP를 끝낸다.
+			clientSocket.close();//
 		}catch(Exception e){
 			e.printStackTrace();
 		}
