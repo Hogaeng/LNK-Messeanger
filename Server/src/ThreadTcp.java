@@ -11,8 +11,6 @@ import java.util.Scanner;
 
 
 public class ThreadTcp implements Runnable{
-
-
 	
 	//private Base64Codec bs64 = new Base64Codec();//
 	private Socket clientSocket = null;//
@@ -60,7 +58,7 @@ public class ThreadTcp implements Runnable{
 			}//
 			in.close();
 			out.close();
-			clientSocket.close();//
+			clientSocket.close();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -74,9 +72,9 @@ public class ThreadTcp implements Runnable{
 				LoginReq lo_req = PacketCodec.decodeLoginReq(src.getData());
 				LoginAck lo_ack = new LoginAck();
 				if(lo_req.getId().equals("Android")&&lo_req.getPassword().equals("123456"))
-					lo_ack.setAnswer(Packet.SUCCESS);
+					lo_ack.setAnswerOk();
 				else
-					lo_ack.setAnswer(Packet.FAIL);
+					lo_ack.setAnswerFail();
 				
 				sendString=PacketCodec.encodeLoginAck(lo_ack);
 				try{

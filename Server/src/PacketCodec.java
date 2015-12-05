@@ -85,6 +85,18 @@ public class PacketCodec {
 				
 		return data;
 	}
+	public static JoinReq decodeJoinReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		JoinReq dst = new JoinReq();
+
+		dst.setName(s.next());
+		s.skip(Packet.FIELD_DELIM);
+		dst.setId(s.next());
+		s.skip(Packet.FIELD_DELIM);
+		dst.setPassword(s.next());
+
+		return dst;
+	}
 	
 	public static String encodeLoginReq(LoginReq pk_data){
 		String data = Packet.LOG_REQ 
@@ -101,6 +113,7 @@ public class PacketCodec {
 		LoginReq dst = new LoginReq();
 
 		dst.setId(s.next());
+		s.skip(Packet.FIELD_DELIM);
 		dst.setPassword(s.next());
 
 		return dst;
@@ -122,8 +135,10 @@ public class PacketCodec {
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		LoginAck dst = new LoginAck();
 
-		dst.setAnswer(s.nextInt());
-
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
 		return dst;
 	}
 	
@@ -134,6 +149,15 @@ public class PacketCodec {
 			    + Packet.PK_DELIM;
 		
 		return data;
+	}
+	
+	public static MssReq decodeMssReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		MssReq dst = new MssReq();
+
+		dst.setMessage(s.next());
+
+		return dst;
 	}
 	
 	

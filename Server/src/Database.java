@@ -10,13 +10,15 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Database {
-	private static final int UPDATE = 0x01;
-	private static final int QUERY = 0x02;
+	private static final String memberData = "Member_Data";
+	private static final String messBoard = "Mess_Board";
+	private static final String roomList = "Room_Id";
+	private static final String friendList = "Friend_List";
 	
-	Connection con;//db와 인터넷 연결
-	Statement st;//상태를 나타내는 변수
+	Connection con;
+	Statement st;
 	ResultSet rs;
-	PreparedStatement pstmt;//쿼리를 넣고 다음에 나온 db 아웃풋 
+	PreparedStatement pstmt; 
 	
 	public Database(){
 		Connection con = null;
@@ -48,7 +50,9 @@ public class Database {
 	public void setPreparedStatement(String query){
 		try{
 			pstmt = con.prepareStatement(query);
-		}catch(SQLException e){//db가 예외를 뱉었다면 있다면 이를 알려준다.
+			//psmt.setString(1,test);
+			//psmt.clearParameters(); that can recycle psmt;
+		}catch(SQLException e){
 			printError(e, query);
 		}
 	}
