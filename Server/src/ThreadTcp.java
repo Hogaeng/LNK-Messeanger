@@ -48,12 +48,12 @@ public class ThreadTcp implements Runnable{
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			System.out.println("ThreadTcp run step one");
 			while(isContinous){
-				rcvPacket = PacketCodec.decodeHeader(in);//
-				
+				inputData = PacketCodec.readBuffReader(in);
 				if(rcvPacket==null){
 					
 					continue;
 				}
+				rcvPacket = PacketCodec.decodeHeader(inputData);//
 				System.out.println("ThreadTcp step four");
 				isContinous = handler(rcvPacket, out);//
 				rcvPacket=null;
