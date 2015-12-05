@@ -64,13 +64,17 @@ public class PacketCodec {
 		String type, data;
 		char charBuf[] = new char[1];
 		String src = "";
+		System.out.println("Decode : step one");
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			src += charBuf[0];
 			System.out.println(src);
+			System.out.println("Decode : step two");
 		}
+		System.out.println("Decode : step three");
 		if(src==null)
 			return null;
+		System.out.println("Decode : step four...");
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
