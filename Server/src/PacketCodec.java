@@ -72,7 +72,7 @@ public class PacketCodec {
 			System.out.println("Decode : step two");
 		}
 		System.out.println("Decode : step three");
-		if(src==null)
+		if(src.equals(""))
 			return null;
 		System.out.println("Decode : step four...");
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
