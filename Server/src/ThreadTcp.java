@@ -57,7 +57,6 @@ public class ThreadTcp implements Runnable{
 				System.out.println("ThreadTcp step four");
 				isContinous = handler(rcvPacket, out);//
 				rcvPacket=null;
-				in.reset();
 			}//
 			in.close();
 			out.close();
