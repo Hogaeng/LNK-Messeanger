@@ -23,8 +23,11 @@ public class TcpServer {
 				clientSocket = serverSocket.accept();
 				if(clientSocket != null){
 					threadServer = new ThreadTcp(clientSocket, true);
+					System.out.println("ThreadTcp step one");
 					thread = new Thread(threadServer);
+					System.out.println("ThreadTcp step two");
 					thread.start();
+					System.out.println("ThreadTcp step three");
 					clientSocket = null;
 				}
 			}

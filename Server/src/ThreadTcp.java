@@ -43,13 +43,19 @@ public class ThreadTcp implements Runnable{
 	
 	public void run(){
 		try{
+			System.out.println("ThreadTcp run step zero");
 			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
-			
+			System.out.println("ThreadTcp run step one");
 			while(isContinous){
+				System.out.println("ThreadTcp run step two");
 				rcvPacket = PacketCodec.decodeHeader(in);//
-				if(rcvPacket==null)
+				System.out.println("ThreadTcp step three");
+				if(rcvPacket==null){
+					System.out.println("rcvPacket is null...");
 					continue;
+				}
+				System.out.println("ThreadTcp step four");
 				isContinous = handler(rcvPacket, out);//
 				rcvPacket=null;
 			}//
