@@ -64,22 +64,19 @@ public class PacketCodec {
 		String type, data;
 		char charBuf[] = new char[1];
 		String src = "";
-		if(in==null)
-			return null;
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			src += charBuf[0];
 			System.out.println(src);
 		}
 		if(src==null)
-			System.out.println("dkdkdkdk");
+			return null;
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
 		s.skip(Packet.FIELD_DELIM);
 		s.useDelimiter("\\"+Packet.PK_DELIM);
 		data = s.next();
-		
 		return new Packet(type, data);
 	}
 	
