@@ -14,7 +14,7 @@ public class TcpServer {
 	
 	public static void main(String[] args) throws IOException{
 		System.out.println("Server is operating.....");
-		System.out.println("test1 go");
+		
 		while(true)
 		{
 			serverSocket = new ServerSocket(PORT);
