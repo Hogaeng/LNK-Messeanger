@@ -50,7 +50,8 @@ public class ThreadTcp implements Runnable{
 				rcvPacket = PacketCodec.decodeHeader(in);//
 				if(rcvPacket==null)
 					continue;
-				isContinous = handler(rcvPacket, out);// 
+				isContinous = handler(rcvPacket, out);//
+				rcvPacket=null;
 			}//
 			in.close();
 			out.close();
