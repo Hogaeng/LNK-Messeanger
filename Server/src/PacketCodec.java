@@ -64,7 +64,7 @@ public class PacketCodec {
 		String type, data;
 		char charBuf[] = new char[1];
 		String src = "";
-		System.out.println("Decode : step one");
+		
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			if(charBuf[0] == '\n')
@@ -72,8 +72,6 @@ public class PacketCodec {
 			src += charBuf[0];
 			System.out.println("Decode : step two");
 		}
-		System.out.println("Decode : step three");
-		System.out.println("src : "+src);
 		if(src.equals(""))
 			return null;
 		System.out.println("Decode : step four...");
