@@ -69,10 +69,10 @@ public class PacketCodec {
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			src += charBuf[0];
+			System.out.println(src);
 		}
 		if(src==null)
 			System.out.println("dkdkdkdk");
-		System.out.println(src);
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
