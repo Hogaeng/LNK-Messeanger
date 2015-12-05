@@ -13,6 +13,7 @@ public class TcpServer {
 	private static ThreadTcp threadServer = null;
 	
 	public static void main(String[] args) throws IOException{
+		System.out.println("Server is operating.....");
 		while(true)
 		{
 			serverSocket = new ServerSocket(PORT);
@@ -27,6 +28,7 @@ public class TcpServer {
 					clientSocket = null;
 				}
 			}
-		}	
+		}
+		
 	}
 }
