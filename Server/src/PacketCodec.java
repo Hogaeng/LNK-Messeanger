@@ -67,11 +67,13 @@ public class PacketCodec {
 		System.out.println("Decode : step one");
 		while(in.read(charBuf, 0, 1) != -1)
 		{
+			if(charBuf[0] == '\n')
+				break;
 			src += charBuf[0];
-			System.out.println(src);
 			System.out.println("Decode : step two");
 		}
 		System.out.println("Decode : step three");
+		System.out.println("src : "+src);
 		if(src.equals(""))
 			return null;
 		System.out.println("Decode : step four...");
