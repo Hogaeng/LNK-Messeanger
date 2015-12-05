@@ -70,6 +70,7 @@ public class PacketCodec {
 		{
 			src += charBuf[0];
 		}
+		System.out.println(src);
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
