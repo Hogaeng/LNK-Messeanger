@@ -29,8 +29,6 @@ public class ThreadTcp implements Runnable{
 	public ThreadTcp(Socket clientSocket, boolean isContinous) throws IOException{
 		this.clientSocket = clientSocket;
 		this.isContinous = isContinous;
-		
-		inputData = "";
 
 		System.out.println("Client Connect");
 	}
@@ -38,8 +36,6 @@ public class ThreadTcp implements Runnable{
 	public ThreadTcp(ServerSocket serverSocket, boolean isContinous) throws IOException{
 		clientSocket = serverSocket.accept();
 		this.isContinous = isContinous;
-		
-		inputData = "";
 
 		System.out.println("Client Connect");
 	}
@@ -51,12 +47,11 @@ public class ThreadTcp implements Runnable{
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			
 			while(isContinous){
-				// read packet and decode
-				
-				rcvPacket = PacketCodec.decodeHeader(inputData);//
+				rcvPacket = PacketCodec.decodeHeader(in);//
+				if(rcvPacket==null)
+					continue;
 				isContinous = handler(rcvPacket, out);// 
 			}//
-
 			in.close();
 			out.close();
 			clientSocket.close();//
@@ -66,7 +61,6 @@ public class ThreadTcp implements Runnable{
 	}
 	public boolean handler(Packet src, PrintWriter out)throws IOException
 	{
-		isContinous = false;
 		String sendString; 
 		switch(src.getType()){
 			case Packet.LOG_REQ:
@@ -91,6 +85,5 @@ public class ThreadTcp implements Runnable{
 		
 		return isContinous;
 	}
-
 }
 

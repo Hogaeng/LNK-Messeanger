@@ -60,14 +60,20 @@ public class PacketCodec {
 	}
 	
 
-	public static Packet decodeHeader(String src) throws IOException{
+	public static Packet decodeHeader(BufferedReader in) throws IOException{
 		String type, data;
-		int size;
+		char charBuf[] = new char[1];
+		String src = "";
+		if(in==null)
+			return null;
+		while(in.read(charBuf, 0, 1) != -1)
+		{
+			src += charBuf[0];
+		}
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
 		s.skip(Packet.FIELD_DELIM);
-		
 		s.useDelimiter("\\"+Packet.PK_DELIM);
 		data = s.next();
 		
