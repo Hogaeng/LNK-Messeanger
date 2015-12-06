@@ -47,7 +47,7 @@ public class ThreadTcp implements Runnable{
 			System.out.println("ThreadTcp run step one");
 			while(isContinous){
 				inputData = PacketCodec.readBuffReader(in);
-				if(rcvPacket==null){
+				if(inputData==null){
 					
 					continue;
 				}
