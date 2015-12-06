@@ -52,9 +52,9 @@ public class PacketCodec {
 			if(charBuf[0] == '\n')
 				break;
 			src += charBuf[0];
-			System.out.println("readBufferReader step two");
+			
 		}
-		System.out.println("readBufferReader step three");
+		System.out.println("readBufferReader step two...while state END");
 		if(src.equals(""))
 			return null;
 		return src;
@@ -63,13 +63,14 @@ public class PacketCodec {
 
 	public static Packet decodeHeader(String src) throws IOException{
 		String type, data;
-		System.out.println("Decode : step four...");
+		System.out.println("Decode : START...");
 		Scanner s = new Scanner(src).useDelimiter("\\"+Packet.FIELD_DELIM);
 		
 		type = s.next();
 		s.skip(Packet.FIELD_DELIM);
 		s.useDelimiter("\\"+Packet.PK_DELIM);
 		data = s.next();
+		System.out.println("Decode : END...");
 		return new Packet(type, data);
 	}
 	

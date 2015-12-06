@@ -53,13 +53,13 @@ public class ThreadTcp implements Runnable{
 	public void run(){
 		try{
 			System.out.println("ThreadTcp run step zero");
-			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
+			
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			System.out.println("ThreadTcp run step one");
 			while(isContinous){
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
 				inputData = PacketCodec.readBuffReader(in);
 				if(inputData==null){
-					
 					continue;
 				}
 				rcvPacket = PacketCodec.decodeHeader(inputData);//
@@ -109,19 +109,22 @@ public class ThreadTcp implements Runnable{
 					{
 						if(jo_req.getId().equals(rs.getString("Id"))){
 							jo_ack.setAnswerFail();
+							System.out.println("Join Ack : Fail");
 							break;
 						}	
 					}
 					
 					if(rs.next()==false){
+						jo_ack.setAnswerOk();
 						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
 								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
 						db.excuteStatement(query);
+						System.out.println("Join Ack : Success");
 					}
 					sendString = PacketCodec.encodeJoinAck(jo_ack);
 					try{
 						out.println(sendString);
-						System.out.println("Log Ack dispatched.");
+						System.out.println("JOin Ack dispatched.");
 						}
 						catch(Exception e){
 							e.printStackTrace();
