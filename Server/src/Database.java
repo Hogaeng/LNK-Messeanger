@@ -10,10 +10,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class Database {
-	private static final String memberData = "Member_Data";
-	private static final String messBoard = "Mess_Board";
-	private static final String roomList = "Room_Id";
-	private static final String friendList = "Friend_List";
+	public static final String memberData = "Member_Data";
+	public static final String messBoard = "Mess_Board";
+	public static final String roomList = "Room_Id";
+	public static final String friendList = "Friend_List";
 	
 	Connection con;
 	Statement st;
@@ -55,6 +55,9 @@ public class Database {
 		}catch(SQLException e){
 			printError(e, query);
 		}
+	}
+	public void excuteStatement(String query){
+	
 	}
 	
 	public PreparedStatement getPreparedStatement(){
