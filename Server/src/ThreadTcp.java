@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 
 public class ThreadTcp implements Runnable{
 	
@@ -100,10 +102,37 @@ public class ThreadTcp implements Runnable{
 				System.out.println("Join REQ recevied");
 				JoinReq jo_req = PacketCodec.decodeJoinReq(src.getData());
 				JoinAck jo_ack = new JoinAck();
-				String query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
-				+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
+				String query = "select Id from "+Database.memberData;//+" where * Dbid";
+				ResultSet rs = db.excuteStatementReturnRs(query);
+				try{
+					while(rs.next())
+					{
+						if(jo_req.getId().equals(rs.getString("Id"))){
+							jo_ack.setAnswerFail();
+							break;
+						}	
+					}
+					
+					if(rs.next()==false){
+						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
+								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
+						db.excuteStatement(query);
+					}
+					sendString = PacketCodec.encodeJoinAck(jo_ack);
+					try{
+						out.println(sendString);
+						System.out.println("Log Ack dispatched.");
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 				
-				
+				break;
 		}
 		
 		return isContinous;
