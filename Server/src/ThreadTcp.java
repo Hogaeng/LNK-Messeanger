@@ -53,11 +53,10 @@ public class ThreadTcp implements Runnable{
 	public void run(){
 		try{
 			System.out.println("ThreadTcp run step zero");
-			
+			in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
 			out = new PrintWriter(clientSocket.getOutputStream(), true);
 			System.out.println("ThreadTcp run step one");
 			while(isContinous){
-				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));//
 				inputData = PacketCodec.readBuffReader(in);
 				if(inputData==null){
 					continue;

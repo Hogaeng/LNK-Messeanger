@@ -54,7 +54,7 @@ public class PacketCodec {
 			src += charBuf[0];
 			
 		}
-		System.out.println("readBufferReader step two...while state END");
+		System.out.println("readBufferReader step two...while state END" + charBuf[0]);
 		if(src.equals(""))
 			return null;
 		return src;
