@@ -5,9 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
 public class Database {
 	public static final String memberData = "Member_Data";
@@ -29,7 +26,7 @@ public class Database {
 	
 	public boolean connect(){
 		try{
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/AndroidDB","AndroidDB", "AndroidDB");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/androidDB","androidDB", "androidDB");
 			st = con.createStatement();
 		}catch(SQLException e){
 			System.out.println("SQLException: " + e.getMessage());
