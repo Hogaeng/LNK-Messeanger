@@ -20,7 +20,7 @@ public class ThreadTcp implements Runnable{
 	
 	private boolean isContinous = false;
 	private int user_id = 0;
-	
+	private Database db;
 	String inputData;
 	Packet rcvPacket;
 
@@ -29,6 +29,11 @@ public class ThreadTcp implements Runnable{
 		this.isContinous = isContinous;
 
 		System.out.println("Client Connect");
+		db = new Database();
+		if(db.connect())
+			System.out.println("DB Connect");
+		else
+			System.out.println("DB Fail...");
 	}
 
 	public ThreadTcp(ServerSocket serverSocket, boolean isContinous) throws IOException{
@@ -36,6 +41,10 @@ public class ThreadTcp implements Runnable{
 		this.isContinous = isContinous;
 
 		System.out.println("Client Connect");
+		if(db.connect())
+			System.out.println("DB Connect");
+		else
+			System.out.println("DB Fail...");
 	}
 
 	
@@ -65,7 +74,8 @@ public class ThreadTcp implements Runnable{
 	}
 	public boolean handler(Packet src, PrintWriter out)throws IOException
 	{
-		String sendString; 
+		String sendString;
+		
 		switch(src.getType()){
 			case Packet.LOG_REQ:
 				System.out.println("Log REQ recevied.");
@@ -85,6 +95,15 @@ public class ThreadTcp implements Runnable{
 					e.printStackTrace();
 				}
 				break;
+				
+			case Packet.JOIN_REQ:
+				System.out.println("Join REQ recevied");
+				JoinReq jo_req = PacketCodec.decodeJoinReq(src.getData());
+				JoinAck jo_ack = new JoinAck();
+				String query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
+				+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
+				
+				
 		}
 		
 		return isContinous;
