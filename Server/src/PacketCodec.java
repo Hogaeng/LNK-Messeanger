@@ -46,7 +46,7 @@ public class PacketCodec {
 		}
 		*/
 		// remove '\n'
-		System.out.println("readBuffReader step one...StandBy...!");
+		//System.out.println("readBuffReader step one...StandBy...!");
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			if(charBuf[0] == '\n')
@@ -54,7 +54,7 @@ public class PacketCodec {
 			src += charBuf[0];
 			
 		}
-		System.out.println("readBufferReader step two...while state END" + charBuf[0]);
+		//System.out.println("readBufferReader step two...while state END" + charBuf[0]);
 		if(src.equals(""))
 			return null;
 		return src;
