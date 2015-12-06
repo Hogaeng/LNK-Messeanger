@@ -57,9 +57,25 @@ public class Database {
 		}
 	}
 	public void excuteStatement(String query){
-	
+		try{
+		getStatement().executeQuery(query);}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
+	public ResultSet excuteStatementReturnRs(String query){
+		try{
+			rs= getStatement().executeQuery(query);}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally{
+			return rs;
+		}
+	}
 	public PreparedStatement getPreparedStatement(){
 		return pstmt;
 	}
