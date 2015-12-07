@@ -25,7 +25,7 @@ public class ThreadTcp implements Runnable{
 	private Database db;
 	String inputData;
 	Packet rcvPacket;
-
+	ResultSet rs;
 	public ThreadTcp(Socket clientSocket, boolean isContinous) throws IOException{
 		this.clientSocket = clientSocket;
 		this.isContinous = isContinous;
@@ -102,7 +102,7 @@ public class ThreadTcp implements Runnable{
 				JoinReq jo_req = PacketCodec.decodeJoinReq(src.getData());
 				JoinAck jo_ack = new JoinAck();
 				db.query = "select Id from "+Database.memberData;//+" where * Dbid";
-				ResultSet rs = db.excuteStatementReturnRs(query);
+				rs = db.excuteStatementReturnRs();
 				try{
 					while(rs.next())
 					{
@@ -115,9 +115,9 @@ public class ThreadTcp implements Runnable{
 					
 					if(jo_ack.getAnswer()!=Packet.FAIL){
 						jo_ack.setAnswerOk();
-						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
+						db.query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
 								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
-						db.excuteStatement(query);
+						db.excuteStatement();
 						System.out.println("Join Ack : Success");
 					}
 					sendString = PacketCodec.encodeJoinAck(jo_ack);
@@ -150,26 +150,25 @@ public class ThreadTcp implements Runnable{
 				System.out.println("GIVEMEM REQ recevied");
 				GiveMemReq give_req = PacketCodec.decodeGiveMemReq(src.getData());
 				GiveMemAck give_ack = new GiveMemAck();
-				query = "select Id from "+Database.memberData;//+" where * Dbid";
-				
+				db.query = "select Id, Name from "+Database.memberData;//+" where * Dbid";
+				rs = db.excuteStatementReturnRs();
+				int count = 0;
+				String name="";
+				String Id="";
 				try{
 					while(rs.next())
 					{
-						if(jo_req.getId().equals(rs.getString("Id"))){
-							jo_ack.setAnswerFail();
-							System.out.println("Join Ack : Fail");
-							break;
-						}	
+						count++;
+						Id+=rs.getString("Id");
+						Id+=Packet.SMALLDELIM;
+						name+=rs.getString("Name");
+						name+=Packet.SMALLDELIM;
 					}
 					
-					if(jo_ack.getAnswer()!=Packet.FAIL){
-						jo_ack.setAnswerOk();
-						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
-								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
-						db.excuteStatement(query);
-						System.out.println("Join Ack : Success");
-					}
-					sendString = PacketCodec.encodeJoinAck(jo_ack);
+					give_ack.setmemberNum(count);
+					give_ack.setmemberName(name);
+					give_ack.setmemberId(Id);
+					sendString = PacketCodec.encodeGiveMemAck(give_ack);
 					try{
 						out.println(sendString);
 						System.out.println("JOin Ack dispatched.");
