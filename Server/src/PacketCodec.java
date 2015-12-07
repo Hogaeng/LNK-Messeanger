@@ -291,7 +291,7 @@ public class PacketCodec {
 	}
 	
 	public static String encodeLobbyAck(LobbyAck pk_data ){
-		String data = Packet.ADDFRIEND_ACK
+		String data = Packet.LOBBY_ACK
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getRoomNum())
 				+ Packet.FIELD_DELIM + pk_data.getRoomName()
@@ -322,7 +322,7 @@ public class PacketCodec {
 		return dst;
 	}
 	public static String encodeRoomReq(RoomReq pk_data){
-		String data = Packet.ADDFRIEND_REQ 
+		String data = Packet.ROOM_REQ 
 				+ Packet.FIELD_DELIM + pk_data.getRoomname()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
@@ -339,7 +339,7 @@ public class PacketCodec {
 	}
 	
 	public static String encodeRoomAck(RoomAck pk_data ){
-		String data = Packet.ADDFRIEND_ACK 
+		String data = Packet.ROOM_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getMauNum())
 				+ Packet.FIELD_DELIM + pk_data.getMau()
@@ -384,7 +384,7 @@ public class PacketCodec {
 		return dst;
 	}
 	public static String encodeGiveMemAck(GiveMemAck pk_data ){
-		String data = Packet.ADDFRIEND_ACK 
+		String data = Packet.GIVEMEM_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getmemNum())
 				+ Packet.FIELD_DELIM + pk_data.getmemberName()
 				+ Packet.FIELD_DELIM + pk_data.getmemberId()
