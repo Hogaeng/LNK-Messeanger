@@ -22,8 +22,9 @@ public class ThreadTcp implements Runnable{
 	
 	private boolean isContinous = false;
 	private int user = 0;
-	String user_id;
+	private String user_id;
 	private int presentRoom=0;
+	private String RoomName;
 	private Database db;
 	String inputData;
 	Packet rcvPacket;
@@ -212,6 +213,7 @@ public class ThreadTcp implements Runnable{
 				db.query = "insert into "+Database.roomList+" (RoomName) values "
 						+"('"+make_req.getRoomName()+"')";
 				db.excuteStatement();
+				RoomName = make_req.getRoomName();
 				System.out.println("MakeRoom...");
 				
 				db.query = "insert into "+Database.messBoard+" (RoomName, Id) values "
