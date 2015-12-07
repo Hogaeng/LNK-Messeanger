@@ -8,45 +8,9 @@ public class PacketCodec {
 	
 	public static String readBuffReader(BufferedReader in) throws IOException{
 		char charBuf[] = new char[1];
-		/*String readMsg = "";
-		short isdelim = 0;
-		int size = 1, totalSize = 0;
-		boolean isFirstDelimAppear = false;
-		String strSize = "";*/
-		
+	
 		String src = "";
-		// read character before packet delimiter
-		/*while(in.read(charBuf, 0, 1) != -1){
-			if(!isFirstDelimAppear){
-				// read size of packet
-				if(Packet.FIELD_DELIM.charAt(0) != charBuf[0]){
-					strSize += charBuf[0];
-				}
-				else{
-					totalSize = Integer.parseInt(strSize);
-					if( totalSize >= 1){
-						size = 1;
-					}else{
-						size = totalSize;
-					}
-					charBuf = new char[size];
-					isFirstDelimAppear = true;
-				}
-			}
-			// Packet.PK_DELIM == '?'
-			else if(charBuf[0] == '?'){
-				readMsg += charBuf[0];
-				isdelim = 1;
-				break;
-			} else {
-				readMsg += charBuf[0];
-				totalSize -= size;
-				continue;
-			}
-		}
-		*/
-		// remove '\n'
-		//System.out.println("readBuffReader step one...StandBy...!");
+		
 		while(in.read(charBuf, 0, 1) != -1)
 		{
 			if(charBuf[0] == '\n')
@@ -159,7 +123,7 @@ public class PacketCodec {
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		LoginAck dst = new LoginAck();
 
-		if(Packet.SUCCESS==s.nextInt())
+		if(s.nextInt()==Packet.SUCCESS)
 			dst.setAnswerOk();
 		else
 			dst.setAnswerFail();
@@ -184,41 +148,25 @@ public class PacketCodec {
 		return dst;
 	}
 	
-	
-	
-	// Decode join response packet data
-	/*public static JoinAck decodeJoinAck(String pk_data){
-		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
-		JoinAck dst = new JoinAck();
-		
-		dst.setResult(s.nextInt());
-		
-		return dst;
-	}*/
-	
-	// About login request
-	// Encode login request
-	
-	
-	
-	
+	public static String encodeMssAck(MssAck pk_data){
+		String data = Packet.MSS_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getAnswer()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
 
-	// Decode login response packet data
-	/*public static LoginAck decodeLoginAck(String pk_data){
-		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
-		LoginAck dst = new LoginAck();
-		
-		dst.setResult(s.nextInt());
-		if(dst.getResult() == Packet.SUCCESS)
-		{
-			dst.setName(s.next());
-			dst.setJob(s.next());
-			dst.setGender(s.next());
-			dst.setCountry(s.next());
-			dst.setProfile_img(s.next());
-		}
-		return dst;
-	}*/
+		return data;
+	}
 	
+	public static MssAck decodeMssAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		MssAck dst = new MssAck();
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+
+		return dst;
+	}
 	
 }
