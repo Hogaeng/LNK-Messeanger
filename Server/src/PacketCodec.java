@@ -413,5 +413,40 @@ public class PacketCodec {
 		return member;
 	}
 	
+	public static String encodeEnterroomReq(EnterroomReq pk_data){
+		String data = Packet.INVIROOM_REQ 
+				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getRoomid())
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static EnterroomReq decodeEnterroomReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		EnterroomReq dst = new EnterroomReq();
+		
+		dst.setRoomid(s.nextInt());
+		
+		return dst;
+	}
 	
+	public static String encodeEnterroomAck(EnterroomAck pk_data ){
+		String data = Packet.INVIROOM_ACK 
+				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static EnterroomAck decodeEnterroomAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		EnterroomAck dst = new EnterroomAck();
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+
+		return dst;
+	}
 }
