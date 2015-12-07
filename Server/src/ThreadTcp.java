@@ -113,7 +113,7 @@ public class ThreadTcp implements Runnable{
 						}	
 					}
 					
-					if(rs.next()==false){
+					if(jo_ack.getAnswer()!=Packet.FAIL){
 						jo_ack.setAnswerOk();
 						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
 								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";

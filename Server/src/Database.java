@@ -55,7 +55,7 @@ public class Database {
 	}
 	public void excuteStatement(String query){
 		try{
-		getStatement().executeQuery(query);}
+		getStatement().execute(query);}
 		catch(Exception e)
 		{
 			e.printStackTrace();
