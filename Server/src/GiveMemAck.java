@@ -18,17 +18,17 @@ public class GiveMemAck {
 	{
 		return memberName;
 	}
-	public void setmemberName(String[] arg)
+	public void setmemberName(String arg)
 	{
-		memberName = PacketCodec.preEncodeAck(memNum, arg);
+		memberName = arg;
 	}
 	
 	public String getmemberId()
 	{
 		return memberId;
 	}
-	public void setmemberId(String[] arg)
+	public void setmemberId(String arg)
 	{
-		memberName = PacketCodec.preEncodeAck(memNum, arg);
+		memberId = arg;
 	}
 }

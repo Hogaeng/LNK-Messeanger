@@ -373,16 +373,6 @@ public class PacketCodec {
 		return data;
 	}
 	
-	public static String preEncodeAck(int num, String[] mem)
-	{
-		String send = "";
-		send += Integer.toString(num);
-		for(int i = 0; i<num; i++)
-		{	send+=Packet.SMALLDELIM;
-			send+=mem[i];
-		}
-		return send;
-	}
 	
 	public static GiveMemAck decodeGiveMemAck(String pk_data){
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
@@ -396,6 +386,18 @@ public class PacketCodec {
 		
 		return dst;
 	}
+	
+	public static String preEncodeAck(int num, String[] mem)
+	{
+		String send = "";
+		send += Integer.toString(num);
+		for(int i = 0; i<num; i++)
+		{	send+=Packet.SMALLDELIM;
+			send+=mem[i];
+		}
+		return send;
+	}
+	
 	
 	public static String[] nextDecodeAck(int num, String mem)
 	{

@@ -101,7 +101,7 @@ public class ThreadTcp implements Runnable{
 				System.out.println("Join REQ recevied");
 				JoinReq jo_req = PacketCodec.decodeJoinReq(src.getData());
 				JoinAck jo_ack = new JoinAck();
-				String query = "select Id from "+Database.memberData;//+" where * Dbid";
+				db.query = "select Id from "+Database.memberData;//+" where * Dbid";
 				ResultSet rs = db.excuteStatementReturnRs(query);
 				try{
 					while(rs.next())
@@ -144,6 +144,44 @@ public class ThreadTcp implements Runnable{
 				out.println(sendString);
 				System.out.println("Mss Ack dispatched.");
 				
+				break;
+				
+			case Packet.GIVEMEM_REQ:
+				System.out.println("GIVEMEM REQ recevied");
+				GiveMemReq give_req = PacketCodec.decodeGiveMemReq(src.getData());
+				GiveMemAck give_ack = new GiveMemAck();
+				query = "select Id from "+Database.memberData;//+" where * Dbid";
+				
+				try{
+					while(rs.next())
+					{
+						if(jo_req.getId().equals(rs.getString("Id"))){
+							jo_ack.setAnswerFail();
+							System.out.println("Join Ack : Fail");
+							break;
+						}	
+					}
+					
+					if(jo_ack.getAnswer()!=Packet.FAIL){
+						jo_ack.setAnswerOk();
+						query = "insert into "+Database.memberData+" (Name,Id,Pw) values "
+								+"('"+jo_req.getName()+"','"+jo_req.getId()+"','"+jo_req.getPassword()+"')";
+						db.excuteStatement(query);
+						System.out.println("Join Ack : Success");
+					}
+					sendString = PacketCodec.encodeJoinAck(jo_ack);
+					try{
+						out.println(sendString);
+						System.out.println("JOin Ack dispatched.");
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 				break;
 				
 		}

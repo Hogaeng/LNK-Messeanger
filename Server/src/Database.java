@@ -15,7 +15,8 @@ public class Database {
 	Connection con;
 	Statement st;
 	ResultSet rs;
-	PreparedStatement pstmt; 
+	PreparedStatement pstmt;
+	public String query;
 	
 	public Database(){
 		Connection con = null;
@@ -44,7 +45,7 @@ public class Database {
 		return con;
 	}
 	
-	public void setPreparedStatement(String query){
+	public void setPreparedStatement(){
 		try{
 			pstmt = con.prepareStatement(query);
 			//psmt.setString(1,test);
@@ -53,7 +54,7 @@ public class Database {
 			printError(e, query);
 		}
 	}
-	public void excuteStatement(String query){
+	public void excuteStatement(){
 		try{
 		getStatement().execute(query);}
 		catch(Exception e)
@@ -62,7 +63,7 @@ public class Database {
 		}
 	}
 	
-	public ResultSet excuteStatementReturnRs(String query){
+	public ResultSet excuteStatementReturnRs(){
 		try{
 			rs= getStatement().executeQuery(query);}
 		catch(Exception e)
