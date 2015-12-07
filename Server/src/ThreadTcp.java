@@ -210,6 +210,7 @@ public class ThreadTcp implements Runnable{
 				MakeRoomReq make_req = PacketCodec.decodeMakeRoomReq(src.getData());
 				MakeRoomAck make_ack = new MakeRoomAck();
 			
+				try{
 				db.query = "insert into "+Database.roomList+" (RoomName) values "
 						+"('"+make_req.getRoomName()+"')";
 				db.excuteStatement();
@@ -220,6 +221,36 @@ public class ThreadTcp implements Runnable{
 						+"('"+make_req.getRoomName()+"','"+user_id+"')";
 				db.excuteStatement();
 				System.out.println("and put user in the Room!");
+				
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					make_ack.setAnswerFail();
+					System.out.println("MAKEROOM Ack Fail...");
+					sendString = PacketCodec.encodeMakeRoomAck(make_ack);
+					try{
+						out.println(sendString);
+						System.out.println("MAKEROOM Ack dispatched");
+						}
+						catch(Exception t)
+						{
+							t.printStackTrace();
+						}
+					break;
+				}
+				make_ack.setAnswerOk();
+				System.out.println("MAKEROOM Ack Success...");
+				sendString = PacketCodec.encodeMakeRoomAck(make_ack);
+				try{
+					out.println(sendString);
+					System.out.println("MAKEROOM Ack dispatched");
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				
 				break;
 		}
 		
