@@ -335,10 +335,68 @@ public class ThreadTcp implements Runnable{
 				LobbyReq lobby_req = PacketCodec.decodeLobbyReq(src.getData());
 				LobbyAck lobby_ack = new LobbyAck();
 				
-				db.query = "select RoomName from "+Database.messBoard+" where Id = '"+user_id+"'";
+				db.query = "select RoomName from "+Database.roomList;
 				rs = db.excuteStatementReturnRs();
 				int lobbyCount = 0;
 				String lobbyRoom="";
+				try{
+					while(rs.next())
+					{
+						lobbyCount++;
+						lobbyRoom+=rs.getString("RoomName");
+						lobbyRoom+=Packet.SMALLDELIM;
+					}
+					lobby_ack.setRoomNum(lobbyCount);
+					lobby_ack.setRoomName(lobbyRoom);
+				db.query = "select FriendId from "+Database.friendList+" where Id = '"+user_id+"'";
+				rs = db.excuteStatementReturnRs();
+				int lobbyFCount = 0;
+				String lobbyFriend="";
+				
+					while(rs.next())
+					{
+						lobbyFCount++;
+						lobbyFriend+=rs.getString("FriendId");
+						lobbyFriend+=Packet.SMALLDELIM;
+					}
+					lobby_ack.setFriendNum(lobbyFCount);
+					lobby_ack.setFriendName(lobbyFriend);
+				}	
+				catch(Exception e)
+				{
+					e.printStackTrace();
+					System.out.println("LOBBY_Ack Fail...");
+					lobby_ack.setAnswerFail();
+					sendString=PacketCodec.encodeLobbyAck(lobby_ack);
+					try{
+						out.println(sendString);
+						System.out.println("Lobby Ack dispatched");
+						}
+						catch(Exception t){
+							t.printStackTrace();
+						}
+					break;
+				}
+				try{
+					lobby_ack.setAnswerOk();
+					System.out.println("LOBBY_Ack success...");
+					sendString=PacketCodec.encodeLobbyAck(lobby_ack);
+					out.println(sendString);
+					System.out.println("EnterRoom Ack dispatched");
+					}
+					catch(Exception t){
+						t.printStackTrace();
+					}
+				break;
+			case Packet.ROOM_REQ:
+				System.out.println("LOBBy REQ recevied");
+				RoomReq room_req = PacketCodec.decodeRoomReq(src.getData());
+				RoomAck room_ack = new RoomAck();
+				
+				db.query = "select RoomName from "+Database.messBoard+" where Id = '"+user_id+"'";
+				rs = db.excuteStatementReturnRs();
+				int roomCount = 0;
+				String roomRoom="";
 				try{
 					while(rs.next())
 					{

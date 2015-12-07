@@ -335,6 +335,7 @@ public class PacketCodec {
 	
 	public static String encodeRoomAck(RoomAck pk_data ){
 		String data = Packet.ADDFRIEND_ACK 
+				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getMauNum())
 				+ Packet.FIELD_DELIM + pk_data.getMau()
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getMemberNum())
@@ -348,6 +349,11 @@ public class PacketCodec {
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		RoomAck dst = new RoomAck();
 
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+		s.skip(Packet.FIELD_DELIM);
 		dst.setMauNum(s.nextInt());
 		s.skip(Packet.FIELD_DELIM);
 		dst.setMau(s.next());
