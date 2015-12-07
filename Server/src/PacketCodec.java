@@ -321,6 +321,7 @@ public class PacketCodec {
 	}
 	public static String encodeRoomReq(RoomReq pk_data){
 		String data = Packet.ADDFRIEND_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getRoomname()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
 
@@ -329,6 +330,8 @@ public class PacketCodec {
 	public static RoomReq decodeRoomReq(String pk_data){
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		RoomReq dst = new RoomReq();
+		
+		dst.setRoomname(s.next());
 		
 		return dst;
 	}
@@ -389,7 +392,7 @@ public class PacketCodec {
 		return data;
 	}
 	
-	public static String preEncodeGiveMemAck(int num, String[] mem)
+	public static String preEncode(int num, String[] mem)
 	{
 		String send = "";
 		send += Integer.toString(num);
@@ -413,7 +416,7 @@ public class PacketCodec {
 		return dst;
 	}
 	
-	public static String[] nextDecodeGiveMemAck(int num, String mem)
+	public static String[] nextDecode(int num, String mem)
 	{
 		String[] member = new String[num];
 		Scanner s = new Scanner(mem).useDelimiter(Packet.SMALLDELIM);

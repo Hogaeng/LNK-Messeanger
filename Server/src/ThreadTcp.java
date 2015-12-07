@@ -128,6 +128,7 @@ public class ThreadTcp implements Runnable{
 				JoinAck jo_ack = new JoinAck();
 				db.query = "select Id from "+Database.memberData;//+" where * Dbid";
 				rs = db.excuteStatementReturnRs();
+				jo_ack.setAnswerOk();
 				try{
 					while(rs.next())
 					{
@@ -389,46 +390,74 @@ public class ThreadTcp implements Runnable{
 					}
 				break;
 			case Packet.ROOM_REQ:
-				System.out.println("LOBBy REQ recevied");
+				System.out.println("Room REQ recevied");
 				RoomReq room_req = PacketCodec.decodeRoomReq(src.getData());
 				RoomAck room_ack = new RoomAck();
-				
-				db.query = "select RoomName from "+Database.messBoard+" where Id = '"+user_id+"'";
+				System.out.println("Room step one");
+				db.query = "select Id, SenStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+room_req.getRoomname()+"'";
 				rs = db.excuteStatementReturnRs();
 				int roomCount = 0;
-				String roomRoom="";
+				String roomId="";
 				try{
 					while(rs.next())
 					{
-						lobbyCount++;
-						lobbyRoom+=rs.getString("RoomName");
-						lobbyRoom+=Packet.SMALLDELIM;
+						roomCount++;
+						roomId+=rs.getString("RoomName");
+						roomId+=Packet.SMALLDELIM;
 					}
-					lobby_ack.setRoomNum(lobbyCount);
-					lobby_ack.setRoomName(lobbyRoom);
-				db.query = "select FriendId from "+Database.friendList+" where Id = '"+user_id+"'";
+				room_ack.setMauNum(roomCount);
+				room_ack.setMau(roomId);
+				String[] allRoomId;
+				allRoomId=PacketCodec.nextDecode(roomCount, roomId);
+				System.out.println("Room step Two");
+				db.query = "select Id from "+Database.memberData;
 				rs = db.excuteStatementReturnRs();
-				int lobbyFCount = 0;
-				String lobbyFriend="";
+				int memCount = 0;
+				String memId="";
 				
 					while(rs.next())
 					{
-						lobbyFCount++;
-						lobbyFriend+=rs.getString("FriendId");
-						lobbyFriend+=Packet.SMALLDELIM;
+						memCount++;
+						memId+=rs.getString("FriendId");
+						memId+=Packet.SMALLDELIM;
 					}
-					lobby_ack.setFriendNum(lobbyFCount);
-					lobby_ack.setFriendName(lobbyFriend);
+					String[] allId;
+					allId=PacketCodec.nextDecode(memCount, memId);
+					System.out.println("Room step Threee");
+					boolean[] check = new boolean[memCount];
+					for(int i = 0; i<memCount; i++)
+					{
+						check[i] = false; 
+					}
+					for(int i = 0; i<roomCount;i++)
+					{
+						for(int j = 0; j<memCount; j++)
+							if(allRoomId.equals(allId[j]))
+								check[j]=true;
+					}
+					System.out.println("Room step Four");
+					String mem="";
+					int memNum = 0;
+					for(int j = 0; j<memCount; j++)
+						if(check[j]==true)
+						{
+							memNum++;
+							mem+=allId[j];
+							mem+=Packet.SMALLDELIM;
+						}
+					room_ack.setMemberNum(memNum);
+					room_ack.setMember(mem);
+				
 				}	
 				catch(Exception e)
 				{
 					e.printStackTrace();
-					System.out.println("LOBBY_Ack Fail...");
-					lobby_ack.setAnswerFail();
-					sendString=PacketCodec.encodeLobbyAck(lobby_ack);
+					System.out.println("Room_Ack Fail...");
+					room_ack.setAnswerFail();
+					sendString=PacketCodec.encodeRoomAck(room_ack);
 					try{
 						out.println(sendString);
-						System.out.println("Lobby Ack dispatched");
+						System.out.println("Room Ack dispatched");
 						}
 						catch(Exception t){
 							t.printStackTrace();
@@ -436,9 +465,9 @@ public class ThreadTcp implements Runnable{
 					break;
 				}
 				try{
-					lobby_ack.setAnswerOk();
-					System.out.println("LOBBY_Ack success...");
-					sendString=PacketCodec.encodeLobbyAck(lobby_ack);
+					room_ack.setAnswerOk();
+					System.out.println("Room_Ack success...");
+					sendString=PacketCodec.encodeRoomAck(room_ack);
 					out.println(sendString);
 					System.out.println("EnterRoom Ack dispatched");
 					}
