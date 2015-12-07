@@ -289,7 +289,8 @@ public class PacketCodec {
 	}
 	
 	public static String encodeLobbyAck(LobbyAck pk_data ){
-		String data = Packet.ADDFRIEND_ACK 
+		String data = Packet.ADDFRIEND_ACK
+				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getRoomNum())
 				+ Packet.FIELD_DELIM + pk_data.getRoomName()
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getFriendNum())
@@ -302,7 +303,12 @@ public class PacketCodec {
 	public static LobbyAck decodeLobbyAck(String pk_data){
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		LobbyAck dst = new LobbyAck();
-
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+		s.skip(Packet.FIELD_DELIM);
 		dst.setRoomNum(s.nextInt());
 		s.skip(Packet.FIELD_DELIM);
 		dst.setRoomName(s.next());

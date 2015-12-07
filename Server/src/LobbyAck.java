@@ -1,9 +1,21 @@
 public class LobbyAck {
+	private int answer;
 	private int RoomNum;
 	private String RoomName;
 	private int FriendNum;
 	private String FriendName;
 	
+    public int getAnswer() {
+        return answer;
+    }
+    
+    public void setAnswerOk() {
+        this.answer = Packet.SUCCESS;
+    }
+    public void setAnswerFail()
+    {
+    	this.answer = Packet.FAIL;
+    }
 	public int getRoomNum() {
 		return RoomNum;
 	}
