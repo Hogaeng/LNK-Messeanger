@@ -82,17 +82,36 @@ public class ThreadTcp implements Runnable{
 				System.out.println("Log REQ recevied.");
 				LoginReq lo_req = PacketCodec.decodeLoginReq(src.getData());
 				LoginAck lo_ack = new LoginAck();
-				if(lo_req.getId().equals("Android")&&lo_req.getPassword().equals("123456"))
-					lo_ack.setAnswerOk();
-				else
-					lo_ack.setAnswerFail();
-				
-				sendString=PacketCodec.encodeLoginAck(lo_ack);
+				db.query = "select Id, Pw, Dbid from "+Database.memberData;//+" where * Dbid";
+				rs = db.excuteStatementReturnRs();
 				try{
-				out.println(sendString);
-				System.out.println("Log Ack dispatched.");
+					while(rs.next())
+					{
+						if(lo_req.getId().equals(rs.getString("Id"))){
+							System.out.println("Login Ack : Id_Success");
+							if(lo_req.getPassword().equals(rs.getString("Pw"))){
+								lo_ack.setAnswerOk();
+								user_id=rs.getInt("Dbid");
+								System.out.println("Login Ack : Success");	
+								break;
+							}
+						}	
+					}
+					if(lo_ack.getAnswer()!=Packet.SUCCESS){
+						lo_ack.setAnswerFail();
+						System.out.println("Login Ack : Fail");
+					}
+					sendString = PacketCodec.encodeLoginAck(lo_ack);
+					try{
+						out.println(sendString);
+						System.out.println("Login Ack dispatched.");
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
 				}
-				catch(Exception e){
+				catch(Exception e)
+				{
 					e.printStackTrace();
 				}
 				break;
