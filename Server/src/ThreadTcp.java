@@ -139,6 +139,10 @@ public class ThreadTcp implements Runnable{
 				System.out.println("MSS REQ recevied");
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
+				mss_ack.setAnswerOk();
+				sendString = PacketCodec.encodeMssAck(mss_ack);
+				out.println(sendString);
+				System.out.println("Mss Ack dispatched.");
 				
 				break;
 				
