@@ -165,13 +165,14 @@ public class ThreadTcp implements Runnable{
 				System.out.println("MSS REQ recevied");
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
-				mss_req.getMessage();
+				if(!mss_req.getMessage().equals(null)){
 				Date dt = new Date();
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 				try{
 				db.query = "insert into "+Database.messBoard+" (RoomId, Id, SendStr, ArriveTime) values "
 						+"('"+Integer.toString(presentRoom)+"','"+user_id+"','"+mss_req.getMessage()+"','"+sdf.format(dt).toString()+"')";
 				db.excuteStatement();
+				mss_ack.setArrtime(sdf.format(dt).toString());
 				}
 				catch(Exception e)
 				{	
@@ -190,9 +191,11 @@ public class ThreadTcp implements Runnable{
 					
 					break;
 				}
+				}
+				db.query = "select Id, SenStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+RoomName+"'";
 				mss_ack.setAnswerOk();
+				
 				System.out.println("MSS Ack Success..");
-				mss_ack.setArrtime(sdf.format(dt).toString());
 				sendString = PacketCodec.encodeMssAck(mss_ack);
 				try{
 					out.println(sendString);
@@ -469,7 +472,7 @@ public class ThreadTcp implements Runnable{
 					System.out.println("Room_Ack success...");
 					sendString=PacketCodec.encodeRoomAck(room_ack);
 					out.println(sendString);
-					System.out.println("EnterRoom Ack dispatched");
+					System.out.println("Room Ack dispatched");
 					}
 					catch(Exception t){
 						t.printStackTrace();

@@ -2,6 +2,7 @@
 public class MssAck {
 	private int answer;
 	private String arrTime;
+	private String list;
     public int getAnswer() {
         return answer;
     }
@@ -20,5 +21,12 @@ public class MssAck {
     
     public void setArrtime(String arg) {
         this.arrTime = arg;
+    }
+    public String getlist() {
+        return list;
+    }
+    
+    public void setlist(String arg) {
+        this.list = arg;
     }
 }

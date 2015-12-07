@@ -153,7 +153,7 @@ public class PacketCodec {
 		String data = Packet.MSS_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + pk_data.getArrtime()
-				+ Packet.FIELD_DELIM
+				+ Packet.FIELD_DELIM + pk_data.getlist()
 			    + Packet.PK_DELIM;
 
 		return data;
@@ -169,6 +169,8 @@ public class PacketCodec {
 		
 		s.skip(Packet.FIELD_DELIM);
 		dst.setArrtime(s.next());
+		s.skip(Packet.FIELD_DELIM);
+		dst.setlist(s.next());
 
 		return dst;
 	}
@@ -275,7 +277,7 @@ public class PacketCodec {
 	}
 	
 	public static String encodeLobbyReq(LobbyReq pk_data){
-		String data = Packet.ADDFRIEND_REQ 
+		String data = Packet.LOBBY_REQ 
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
 
