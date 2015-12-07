@@ -108,8 +108,9 @@ public class PacketCodec {
 	}
 	
 	public static String encodeLoginAck(LoginAck pk_data){
-		String data = Packet.LOG_ACK + Packet.FIELD_DELIM
-				+ Integer.toString(pk_data.getAnswer()) + Packet.FIELD_DELIM;
+		String data = Packet.LOG_ACK
+				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
+				+ Packet.FIELD_DELIM;
 		
 		/*if (pk_data.getAnswer() == Packet.SUCCESS){
 		}*/
@@ -149,14 +150,13 @@ public class PacketCodec {
 	}
 	
 	public static String encodeMssAck(MssAck pk_data){
-		String data = Packet.MSS_REQ 
+		String data = Packet.MSS_ACK 
 				+ Packet.FIELD_DELIM + pk_data.getAnswer()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
 
 		return data;
 	}
-	
 	public static MssAck decodeMssAck(String pk_data){
 		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
 		MssAck dst = new MssAck();
@@ -169,4 +169,37 @@ public class PacketCodec {
 		return dst;
 	}
 	
+	public static String encodeInviRoomReq(InviRoomReq pk_data){
+		String data = Packet.INVIROOM_REQ 
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static InviRoomReq decodeInviRoomReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		InviRoomReq dst = new InviRoomReq();
+		
+		return dst;
+	}
+	
+	public static String encodeInviRoomAck(InviRoomAck pk_data ){
+		String data = Packet.INVIROOM_ACK 
+				+ Packet.FIELD_DELIM + pk_data.getAnswer()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static InviRoomAck decodeInviRoomAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		InviRoomAck dst = new InviRoomAck();
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+
+		return dst;
+	}
 }

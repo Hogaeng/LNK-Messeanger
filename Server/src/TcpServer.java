@@ -16,6 +16,7 @@ public class TcpServer {
 		System.out.println("Server is operating.....");
 		while(true)
 		{
+			
 			serverSocket = new ServerSocket(PORT);
 			serverSocket.setReuseAddress(true);
 			while(true) {
