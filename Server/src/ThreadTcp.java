@@ -21,7 +21,9 @@ public class ThreadTcp implements Runnable{
 	private BufferedReader in = null;
 	
 	private boolean isContinous = false;
-	private int user_id = 0;
+	private int user = 0;
+	String user_id;
+	private int presentRoom=0;
 	private Database db;
 	String inputData;
 	Packet rcvPacket;
@@ -91,7 +93,8 @@ public class ThreadTcp implements Runnable{
 							System.out.println("Login Ack : Id_Success");
 							if(lo_req.getPassword().equals(rs.getString("Pw"))){
 								lo_ack.setAnswerOk();
-								user_id=rs.getInt("Dbid");
+								user=rs.getInt("Dbid");
+								user_id = rs.getString("Id");
 								System.out.println("Login Ack : Success");	
 								break;
 							}
@@ -166,7 +169,7 @@ public class ThreadTcp implements Runnable{
 				break;
 				
 			case Packet.GIVEMEM_REQ:
-				System.out.println("GIVEMEM REQ recevied");
+				System.out.println("GiveMem REQ recevied");
 				GiveMemReq give_req = PacketCodec.decodeGiveMemReq(src.getData());
 				GiveMemAck give_ack = new GiveMemAck();
 				db.query = "select Id, Name from "+Database.memberData;//+" where * Dbid";
@@ -190,7 +193,7 @@ public class ThreadTcp implements Runnable{
 					sendString = PacketCodec.encodeGiveMemAck(give_ack);
 					try{
 						out.println(sendString);
-						System.out.println("JOin Ack dispatched.");
+						System.out.println("GiveMem Ack dispatched.");
 						}
 						catch(Exception e){
 							e.printStackTrace();
@@ -201,7 +204,21 @@ public class ThreadTcp implements Runnable{
 					e.printStackTrace();
 				}
 				break;
+			case Packet.MAKEROOM_REQ:
+				System.out.println("MAKEROOM REQ recevied");
+				MakeRoomReq make_req = PacketCodec.decodeMakeRoomReq(src.getData());
+				MakeRoomAck make_ack = new MakeRoomAck();
+			
+				db.query = "insert into "+Database.roomList+" (RoomName) values "
+						+"('"+make_req.getRoomName()+"')";
+				db.excuteStatement();
+				System.out.println("MakeRoom...");
 				
+				db.query = "insert into "+Database.messBoard+" (RoomName, Id) values "
+						+"('"+make_req.getRoomName()+"','"+user_id+"')";
+				db.excuteStatement();
+				System.out.println("and put user in the Room!");
+				break;
 		}
 		
 		return isContinous;
