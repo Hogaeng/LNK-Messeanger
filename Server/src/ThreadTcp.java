@@ -217,8 +217,12 @@ public class ThreadTcp implements Runnable{
 				RoomName = make_req.getRoomName();
 				System.out.println("MakeRoom...");
 				
-				db.query = "insert into "+Database.messBoard+" (RoomName, Id) values "
-						+"('"+make_req.getRoomName()+"','"+user_id+"')";
+				db.query = "select RoomId from "+Database.roomList;//+" where * Dbid";
+				rs = db.excuteStatementReturnRs();
+				rs.next();
+				presentRoom = rs.getInt("RoomId");
+				db.query = "insert into "+Database.messBoard+" (RoomId, Id) values "
+						+"('"+presentRoom+"','"+user_id+"')";
 				db.excuteStatement();
 				System.out.println("and put user in the Room!");
 				
