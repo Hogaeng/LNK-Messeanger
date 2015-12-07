@@ -18,8 +18,6 @@ public class TcpServer {
 		{
 			serverSocket = new ServerSocket(PORT);
 			serverSocket.setReuseAddress(true);
-			db = new Database();
-			db.connect();
 			while(true) {
 				clientSocket = serverSocket.accept();
 				if(clientSocket != null){
