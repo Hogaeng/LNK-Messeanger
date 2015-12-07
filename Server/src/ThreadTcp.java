@@ -163,9 +163,9 @@ public class ThreadTcp implements Runnable{
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
 				mss_req.getMessage();
-				db.query = "insert into "+Database.messBoard+" (RoomId, Id, ) values "
+				/*db.query = "insert into "+Database.messBoard+" (RoomId, Id, ) values "
 						+"('"+make_req.getRoomName()+"')";
-				db.excuteStatement();
+				db.excuteStatement();*/
 				
 				mss_ack.setAnswerOk();
 				sendString = PacketCodec.encodeMssAck(mss_ack);
