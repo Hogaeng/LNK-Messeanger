@@ -6,7 +6,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
@@ -163,15 +165,41 @@ public class ThreadTcp implements Runnable{
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
 				mss_req.getMessage();
-				/*db.query = "insert into "+Database.messBoard+" (RoomId, Id, ) values "
-						+"('"+make_req.getRoomName()+"')";
-				db.excuteStatement();*/
-				
+				Date dt = new Date();
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+				try{
+				db.query = "insert into "+Database.messBoard+" (RoomId, Id, SendStr, ArriveTime) values "
+						+"('"+RoomName+"','"+user_id+"','"+mss_req.getMessage()+"','"+sdf.format(dt).toString()+"')";
+				db.excuteStatement();
+				}
+				catch(Exception e)
+				{	
+					e.printStackTrace();
+					System.out.println("MSS Ack Fail..");
+					mss_ack.setAnswerFail();
+					mss_ack.setArrtime(null);
+					sendString = PacketCodec.encodeMssAck(mss_ack);
+					try{
+						out.println(sendString);
+						System.out.println("Mss Ack dispatched.");
+						}
+						catch(Exception t){
+							t.printStackTrace();
+						}
+					
+					break;
+				}
 				mss_ack.setAnswerOk();
+				System.out.println("MSS Ack Success..");
+				mss_ack.setArrtime(sdf.format(dt).toString());
 				sendString = PacketCodec.encodeMssAck(mss_ack);
-				out.println(sendString);
-				System.out.println("Mss Ack dispatched.");
-				
+				try{
+					out.println(sendString);
+					System.out.println("Mss Ack dispatched.");
+					}
+					catch(Exception t){
+						t.printStackTrace();
+					}
 				break;
 				
 			case Packet.GIVEMEM_REQ:

@@ -152,6 +152,7 @@ public class PacketCodec {
 	public static String encodeMssAck(MssAck pk_data){
 		String data = Packet.MSS_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
+				+ Packet.FIELD_DELIM + pk_data.getArrtime()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
 
@@ -165,6 +166,9 @@ public class PacketCodec {
 			dst.setAnswerOk();
 		else
 			dst.setAnswerFail();
+		
+		s.skip(Packet.FIELD_DELIM);
+		dst.setArrtime(s.next());
 
 		return dst;
 	}
