@@ -135,6 +135,13 @@ public class ThreadTcp implements Runnable{
 				}
 				
 				break;
+			case Packet.MSS_REQ:
+				System.out.println("MSS REQ recevied");
+				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
+				MssAck mss_ack = new MssAck();
+				
+				break;
+				
 		}
 		
 		return isContinous;

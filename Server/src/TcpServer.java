@@ -11,7 +11,7 @@ public class TcpServer {
 	private static Socket clientSocket = null;
 	private static final int PORT = 9193; // can use 9193 9194 9195
 	private static ThreadTcp threadServer = null;
-	private static Database db;
+	
 	public static void main(String[] args) throws IOException{
 		System.out.println("Server is operating.....");
 		while(true)
