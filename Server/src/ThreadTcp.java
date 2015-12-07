@@ -162,6 +162,11 @@ public class ThreadTcp implements Runnable{
 				System.out.println("MSS REQ recevied");
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
+				mss_req.getMessage();
+				db.query = "insert into "+Database.messBoard+" (RoomId, Id, ) values "
+						+"('"+make_req.getRoomName()+"')";
+				db.excuteStatement();
+				
 				mss_ack.setAnswerOk();
 				sendString = PacketCodec.encodeMssAck(mss_ack);
 				out.println(sendString);
@@ -217,14 +222,16 @@ public class ThreadTcp implements Runnable{
 				RoomName = make_req.getRoomName();
 				System.out.println("MakeRoom...");
 				
-				db.query = "select RoomId from "+Database.roomList+" where RoomName = "+RoomName;
+				/*db.query = "select RoomId from "+Database.roomList+" where RoomName = "+RoomName;
 				rs = db.excuteStatementReturnRs();
 				rs.next();
-				presentRoom = rs.getInt("RoomId");
-				db.query = "insert into "+Database.messBoard+" (RoomId, Id) values "
+				presentRoom = rs.getInt("RoomId");*/
+				
+				
+				/*db.query = "insert into "+Database.messBoard+" (RoomId, Id) values "
 						+"('"+presentRoom+"','"+user_id+"')";
 				db.excuteStatement();
-				System.out.println("and put user in the Room!");
+				System.out.println("and put user in the Room!");*/
 				
 				}
 				catch(Exception e)
