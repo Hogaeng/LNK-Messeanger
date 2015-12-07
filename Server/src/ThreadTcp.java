@@ -250,11 +250,11 @@ public class ThreadTcp implements Runnable{
 				RoomName = make_req.getRoomName();
 				System.out.println("MakeRoom...");
 				
-				/*db.query = "select RoomId from "+Database.roomList+" where RoomName = "+RoomName;
+				db.query = "select RoomId from "+Database.roomList+" where RoomName = "+RoomName;
 				rs = db.excuteStatementReturnRs();
 				rs.next();
-				presentRoom = rs.getInt("RoomId");*/
-				
+				presentRoom = rs.getInt("RoomId");
+				System.out.println("and Server recognize user is in the Room!");
 				
 				/*db.query = "insert into "+Database.messBoard+" (RoomId, Id) values "
 						+"('"+presentRoom+"','"+user_id+"')";
@@ -290,6 +290,44 @@ public class ThreadTcp implements Runnable{
 						e.printStackTrace();
 					}
 				
+				break;
+				
+			case Packet.ENTERROOM_REQ:
+				System.out.println("EnterRoom REQ recevied");
+				EnterroomReq enterRoom_req = PacketCodec.decodeEnterroomReq(src.getData());
+				EnterroomAck enterRoom_ack = new EnterroomAck();
+				
+				presentRoom=enterRoom_req.getRoomid();
+				
+				db.query = "select RoomName from "+Database.roomList+" where RoomName = "+Integer.toString(presentRoom);
+				rs = db.excuteStatementReturnRs();
+				try{
+					rs.next();
+					RoomName = rs.getString("RoomName");
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					System.out.println("EnterRoom select Fail...");
+					enterRoom_ack.setAnswerFail();
+					sendString=PacketCodec.encodeEnterroomAck(enterRoom_ack);
+					try{
+						out.println(sendString);
+						System.out.println("EnterRoom Ack dispatched");
+						}
+						catch(Exception t){
+							t.printStackTrace();
+						}
+					break;
+				}
+				try{
+					enterRoom_ack.setAnswerOk();
+					sendString=PacketCodec.encodeEnterroomAck(enterRoom_ack);
+					out.println(sendString);
+					System.out.println("EnterRoom Ack dispatched");
+					}
+					catch(Exception t){
+						t.printStackTrace();
+					}
 				break;
 		}
 		
