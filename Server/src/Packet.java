@@ -22,7 +22,6 @@ public class Packet {
 
 	public static final String ROOM_REQ = "ROOM_REQ";
 	public static final String ROOM_ACK = "ROOM_ACK";
-
 	
 	public static final String FIELD_DELIM = "|";
 	public static final String PK_DELIM = "?";

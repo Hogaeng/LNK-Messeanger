@@ -25,4 +25,9 @@ public class MssAndArrtimeAndUser {
 		Username = name;
 	}
 	
+	public String getAll(){
+		String all =null;
+		return all;
+	}
+	
 }

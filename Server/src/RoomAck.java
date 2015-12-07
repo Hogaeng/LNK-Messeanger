@@ -1,7 +1,7 @@
 
 public class RoomAck {
 	private int mauNum ;
-	private MssAndArrtimeAndUser mau;
+	private String mau;
 	private int memberNum;
 	private String member;
 	
@@ -12,11 +12,12 @@ public class RoomAck {
 		mauNum = num;
 	}
 	
-	public MssAndArrtimeAndUser getMau() {
+	public String getMau() {
 		return mau;
 	}
-	public void setRoomName(MssAndArrtimeAndUser mau) {
-		this.mau = mau;
+	public void setMau(String mau) {
+		
+		this.mau = mau ;
 	}
 	
 	public int getMemberNum() {

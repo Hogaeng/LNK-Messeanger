@@ -202,4 +202,144 @@ public class PacketCodec {
 
 		return dst;
 	}
+	
+	public static String encodeMakeRoomReq(MakeRoomReq pk_data){
+		String data = Packet.MAKEROOM_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getRoomName()
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static MakeRoomReq decodeMakeRoomReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		MakeRoomReq dst = new MakeRoomReq();
+		dst.setRoomName(s.next());
+		return dst;
+	}
+	
+	public static String encodeMakeRoomAck(MakeRoomAck pk_data ){
+		String data = Packet.MAKEROOM_ACK 
+				+ Packet.FIELD_DELIM + pk_data.getAnswer()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static MakeRoomAck decodeMakeRoomAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		MakeRoomAck dst = new MakeRoomAck();
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+
+		return dst;
+	}
+	public static String encodeAddFriendReq(AddFriendReq pk_data){
+		String data = Packet.ADDFRIEND_REQ 
+				+ Packet.FIELD_DELIM + pk_data.getFriendName()
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static AddFriendReq decodeAddFriendReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		AddFriendReq dst = new AddFriendReq();
+		dst.setFriendName(s.next());
+		return dst;
+	}
+	
+	public static String encodeAddFrinedAck(AddFriendAck pk_data ){
+		String data = Packet.ADDFRIEND_ACK 
+				+ Packet.FIELD_DELIM + pk_data.getAnswer()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static AddFriendAck decodeAddFriendAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		AddFriendAck dst = new AddFriendAck();
+		
+		if(Packet.SUCCESS==s.nextInt())
+			dst.setAnswerOk();
+		else
+			dst.setAnswerFail();
+
+		return dst;
+	}
+	
+	public static String encodeLobbyReq(LobbyReq pk_data){
+		String data = Packet.ADDFRIEND_REQ 
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static LobbyReq decodeLobbyReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		LobbyReq dst = new LobbyReq();
+		
+		return dst;
+	}
+	
+	public static String encodeLobbyAck(LobbyAck pk_data ){
+		String data = Packet.ADDFRIEND_ACK 
+				+ Packet.FIELD_DELIM + pk_data.getRoomNum()
+				+ Packet.FIELD_DELIM + pk_data.getRoomName()
+				+ Packet.FIELD_DELIM + pk_data.getFriendNum()
+				+ Packet.FIELD_DELIM + pk_data.getFriendName()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static LobbyAck decodeLobbyAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		LobbyAck dst = new LobbyAck();
+
+		dst.setRoomNum(s.nextInt());
+		dst.setRoomName(s.next());
+		dst.setFriendNum(s.nextInt());
+		dst.setFriendName(s.next());
+		
+		return dst;
+	}
+	public static String encodeRoomReq(RoomReq pk_data){
+		String data = Packet.ADDFRIEND_REQ 
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static RoomReq decodeRoomReq(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		RoomReq dst = new RoomReq();
+		
+		return dst;
+	}
+	
+	public static String encodeRoomAck(RoomAck pk_data ){
+		String data = Packet.ADDFRIEND_ACK 
+				+ Packet.FIELD_DELIM + pk_data.getMauNum()
+				+ Packet.FIELD_DELIM + pk_data.getMau()
+				+ Packet.FIELD_DELIM + pk_data.getMemberNum()
+				+ Packet.FIELD_DELIM + pk_data.getMember()
+				+ Packet.FIELD_DELIM
+			    + Packet.PK_DELIM;
+
+		return data;
+	}
+	public static RoomAck decodeRoomAck(String pk_data){
+		Scanner s = new Scanner(pk_data).useDelimiter("\\"+Packet.FIELD_DELIM);
+		RoomAck dst = new RoomAck();
+
+		dst.setMauNum(s.nextInt());
+		dst.setMau(s.next());
+		dst.setMemberNum(s.nextInt());
+		dst.setMember(s.next());
+		
+		return dst;
+	}
 }
