@@ -217,7 +217,7 @@ public class ThreadTcp implements Runnable{
 				RoomName = make_req.getRoomName();
 				System.out.println("MakeRoom...");
 				
-				db.query = "select RoomId from "+Database.roomList+" where "+RoomName +"RoomName";
+				db.query = "select RoomId from "+Database.roomList+" where RoomName = "+RoomName;
 				rs = db.excuteStatementReturnRs();
 				rs.next();
 				presentRoom = rs.getInt("RoomId");
