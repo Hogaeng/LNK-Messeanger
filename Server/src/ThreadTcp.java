@@ -206,7 +206,7 @@ public class ThreadTcp implements Runnable{
 						DCount++;
 						Dd+=rs.getString("Id");
 						Dd+=Packet.TINYDELIM;
-						Dd+=rs.getString("SenStr");
+						Dd+=rs.getString("SendStr");
 						Dd+=Packet.TINYDELIM;
 						Dd+=rs.getString("ArriveTime");
 						Dd+=Packet.TINYDELIM;
@@ -433,7 +433,7 @@ public class ThreadTcp implements Runnable{
 						roomCount++;
 						roomId+=rs.getString("Id");
 						roomId+=Packet.TINYDELIM;
-						roomId+=rs.getString("SenStr");
+						roomId+=rs.getString("SendStr");
 						roomId+=Packet.TINYDELIM;
 						roomId+=rs.getString("ArriveTime");
 						roomId+=Packet.TINYDELIM;
