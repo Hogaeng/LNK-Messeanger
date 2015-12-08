@@ -434,7 +434,7 @@ f
 	}
 	
 	public static String encodeEnterroomReq(EnterroomReq pk_data){
-		String data = Packet.INVIROOM_REQ 
+		String data = Packet.ENTERROOM_REQ 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getRoomid())
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
@@ -451,7 +451,7 @@ f
 	}
 	
 	public static String encodeEnterroomAck(EnterroomAck pk_data ){
-		String data = Packet.INVIROOM_ACK 
+		String data = Packet.ENTERROOM_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
