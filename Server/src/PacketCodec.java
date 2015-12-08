@@ -466,4 +466,24 @@ public class PacketCodec {
 
 		return dst;
 	}
+	
+	public static MssAndArrtimeAndUser[] nextTinydecode(int num,String[] arg)
+	{
+		MssAndArrtimeAndUser[] mau = new MssAndArrtimeAndUser[num];
+		
+		for(int i =0 ;i<num;i++){
+			Scanner s = new Scanner(arg[i]).useDelimiter(Packet.TINYDELIM);
+		for(int j =0 ;j<3;j++){
+		mau[j].setName(s.next());
+		s.skip(Packet.TINYDELIM);
+		mau[j].setMss(s.next());
+		s.skip(Packet.TINYDELIM);
+		mau[j].setArrtime(s.next());
+		s.skip(Packet.TINYDELIM);
+		}		
+		}
+		
+		return mau;
+		
+	}
 }

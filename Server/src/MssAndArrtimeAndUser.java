@@ -1,7 +1,7 @@
 
 public class MssAndArrtimeAndUser {
 	private String Mss;
-	private int Arrtime;
+	private String Arrtime;
 	private String Username;
 	
 	public String getMss() {
@@ -11,10 +11,10 @@ public class MssAndArrtimeAndUser {
 		Mss = name;
 	}
 	
-	public int getArrtime() {
+	public String getArrtime() {
 		return Arrtime;
 	}
-	public void setArrtime(int arrTime) {
+	public void setArrtime(String arrTime) {
 		Arrtime = arrTime;
 	}
 	

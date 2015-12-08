@@ -165,17 +165,17 @@ public class ThreadTcp implements Runnable{
 				System.out.println("MSS REQ recevied");
 				MssReq mss_req = PacketCodec.decodeMssReq(src.getData());
 				MssAck mss_ack = new MssAck();
-				if(!mss_req.getMessage().equals(null)){
+				SimpleDateFormat sdf =null;
 				Date dt = new Date();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+				if(!mss_req.getMessage().equals(null)){
+				sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 				try{
 				db.query = "insert into "+Database.messBoard+" (RoomId, Id, SendStr, ArriveTime) values "
 						+"('"+Integer.toString(presentRoom)+"','"+user_id+"','"+mss_req.getMessage()+"','"+sdf.format(dt).toString()+"')";
 				db.excuteStatement();
 				mss_ack.setArrtime(sdf.format(dt).toString());
 				}
-				catch(Exception e)
-				{	
+				catch(Exception e){	
 					e.printStackTrace();
 					System.out.println("MSS Ack Fail..");
 					mss_ack.setAnswerFail();
@@ -191,10 +191,36 @@ public class ThreadTcp implements Runnable{
 					
 					break;
 				}
+				
 				}
 				db.query = "select Id, SenStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+RoomName+"'";
+				db.rs = db.excuteStatementReturnRs();
+				try{
+					int DCount = 0;
+					String Dd = "";
+				while(db.rs.next())
+				{
+					Date to = sdf.parse(db.rs.getString("ArriveTime"));
+					if(dt.before(to))
+					{
+						DCount++;
+						Dd+=rs.getString("Id");
+						Dd+=Packet.TINYDELIM;
+						Dd+=rs.getString("SenStr");
+						Dd+=Packet.TINYDELIM;
+						Dd+=rs.getString("ArriveTime");
+						Dd+=Packet.TINYDELIM;
+						Dd+=Packet.SMALLDELIM;
+					}
+				 }
+				mss_ack.setListNum(DCount);
+				mss_ack.setlist(Dd);
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
 				mss_ack.setAnswerOk();
-				
 				System.out.println("MSS Ack Success..");
 				sendString = PacketCodec.encodeMssAck(mss_ack);
 				try{
@@ -405,8 +431,14 @@ public class ThreadTcp implements Runnable{
 					while(rs.next())
 					{
 						roomCount++;
-						roomId+=rs.getString("RoomName");
+						roomId+=rs.getString("Id");
+						roomId+=Packet.TINYDELIM;
+						roomId+=rs.getString("SenStr");
+						roomId+=Packet.TINYDELIM;
+						roomId+=rs.getString("ArriveTime");
+						roomId+=Packet.TINYDELIM;
 						roomId+=Packet.SMALLDELIM;
+						
 					}
 				room_ack.setMauNum(roomCount);
 				room_ack.setMau(roomId);
