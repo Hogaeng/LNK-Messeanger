@@ -423,7 +423,7 @@ public class ThreadTcp implements Runnable{
 				RoomReq room_req = PacketCodec.decodeRoomReq(src.getData());
 				RoomAck room_ack = new RoomAck();
 				System.out.println("Room step one");
-				db.query = "select Id, SenStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+room_req.getRoomname()+"'";
+				db.query = "select Id, SendStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+room_req.getRoomname()+"'";
 				rs = db.excuteStatementReturnRs();
 				int roomCount = 0;
 				String roomId="";
