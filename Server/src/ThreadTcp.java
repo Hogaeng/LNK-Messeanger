@@ -193,7 +193,7 @@ public class ThreadTcp implements Runnable{
 				}
 				
 				}
-				db.query = "select Id, SendStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+RoomName+"'";
+				db.query = "select Id, SendStr, ArriveTime from "+Database.messBoard+" where RoomId = '"+presentRoom+"'";
 				db.rs = db.excuteStatementReturnRs();
 				try{
 					int DCount = 0;
@@ -329,7 +329,7 @@ public class ThreadTcp implements Runnable{
 				
 				presentRoom=enterRoom_req.getRoomid();
 				
-				db.query = "select RoomName from "+Database.roomList+" where RoomName = '"+Integer.toString(presentRoom)+"'";
+				db.query = "select RoomName from "+Database.roomList+" where RoomId = '"+presentRoom+"'";
 				rs = db.excuteStatementReturnRs();
 				try{
 					rs.next();
