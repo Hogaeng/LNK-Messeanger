@@ -213,6 +213,7 @@ public class PacketCodec {
 	public static String encodeMakeRoomReq(MakeRoomReq pk_data){
 		String data = Packet.MAKEROOM_REQ 
 				+ Packet.FIELD_DELIM + pk_data.getRoomName()
+				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
 
 		return data;
@@ -246,8 +247,9 @@ public class PacketCodec {
 	public static String encodeAddFriendReq(AddFriendReq pk_data){
 		String data = Packet.ADDFRIEND_REQ 
 				+ Packet.FIELD_DELIM + pk_data.getFriendName()
+				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
-
+f
 		return data;
 	}
 	public static AddFriendReq decodeAddFriendReq(String pk_data){
