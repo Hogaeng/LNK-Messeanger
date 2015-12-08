@@ -193,7 +193,7 @@ public class ThreadTcp implements Runnable{
 				}
 				
 				}
-				db.query = "select Id, SenStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+RoomName+"'";
+				db.query = "select Id, SendStr, ArriveTime from "+Database.messBoard+" where RoomName = '"+RoomName+"'";
 				db.rs = db.excuteStatementReturnRs();
 				try{
 					int DCount = 0;
