@@ -168,7 +168,7 @@ public class ThreadTcp implements Runnable{
 				SimpleDateFormat sdf =null;
 				Date dt = new Date();
 				
-				if(!mss_req.getMessage().equals("")){
+				if(!mss_req.getMessage().equals(null)){
 				sdf = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 				try{
 				db.query = "insert into "+Database.messBoard+" (RoomId, Id, SendStr, ArriveTime) values "
