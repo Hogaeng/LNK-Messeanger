@@ -195,11 +195,11 @@ public class ThreadTcp implements Runnable{
 				
 				}
 				db.query = "select Id, SendStr, ArriveTime from "+Database.messBoard+" where RoomId = '"+presentRoom+"'";
-				db.rs = db.excuteStatementReturnRs();
+				rs = db.excuteStatementReturnRs();
 				try{
 					int DCount = 0;
 					String Dd = "";
-				while(db.rs.next())
+				while(rs.next())
 				{
 					/*Date to = sdf.parse(db.rs.getString("ArriveTime"));
 					if(dt.before(to))
