@@ -481,16 +481,19 @@ public class PacketCodec {
 	public static MssAndArrtimeAndUser[] nextTinydecode(int num,String[] arg)
 	{
 		MssAndArrtimeAndUser[] mau = new MssAndArrtimeAndUser[num];
+		for(int i =0 ;i<num;i++){
+			mau[i] = new MssAndArrtimeAndUser();
+		}
 		
 		for(int i =0 ;i<num;i++){
 			Scanner s = new Scanner(arg[i]).useDelimiter("\\"+Packet.TINYDELIM);
 		
 		mau[i].setName(s.next());
-		s.skip(Packet.TINYDELIM);
+		s.skip("\\"+Packet.TINYDELIM);
 		mau[i].setMss(s.next());
-		s.skip(Packet.TINYDELIM);
+		s.skip("\\"+Packet.TINYDELIM);
 		mau[i].setArrtime(s.next());
-		s.skip(Packet.TINYDELIM);		
+		s.skip("\\"+Packet.TINYDELIM);		
 		}
 		
 		return mau;
