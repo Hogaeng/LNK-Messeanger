@@ -432,7 +432,7 @@ public class PacketCodec {
 	public static String[] nextDecode(int num, String mem)
 	{
 		String[] member = new String[num];
-		Scanner s = new Scanner(mem).useDelimiter(Packet.SMALLDELIM);
+		Scanner s = new Scanner(mem).useDelimiter("\\"+Packet.SMALLDELIM);
 		
 		for(int i =0 ;i<num;i++){
 		member[i] = s.next();
@@ -483,7 +483,7 @@ public class PacketCodec {
 		MssAndArrtimeAndUser[] mau = new MssAndArrtimeAndUser[num];
 		
 		for(int i =0 ;i<num;i++){
-			Scanner s = new Scanner(arg[i]).useDelimiter(Packet.TINYDELIM);
+			Scanner s = new Scanner(arg[i]).useDelimiter("\\"+Packet.TINYDELIM);
 		
 		mau[i].setName(s.next());
 		s.skip(Packet.TINYDELIM);
