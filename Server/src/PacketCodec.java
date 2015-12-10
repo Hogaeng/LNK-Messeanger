@@ -153,6 +153,7 @@ public class PacketCodec {
 		String data = Packet.MSS_ACK 
 				+ Packet.FIELD_DELIM + Integer.toString(pk_data.getAnswer())
 				+ Packet.FIELD_DELIM + pk_data.getArrtime()
+				+ Packet.FIELD_DELIM + pk_data.getListnum()
 				+ Packet.FIELD_DELIM + pk_data.getlist()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
