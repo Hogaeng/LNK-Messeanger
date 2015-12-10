@@ -200,9 +200,9 @@ public class ThreadTcp implements Runnable{
 					String Dd = "";
 				while(db.rs.next())
 				{
-					Date to = sdf.parse(db.rs.getString("ArriveTime"));
+					/*Date to = sdf.parse(db.rs.getString("ArriveTime"));
 					if(dt.before(to))
-					{
+					{*/
 						DCount++;
 						Dd+=rs.getString("Id");
 						Dd+=Packet.TINYDELIM;
@@ -211,7 +211,7 @@ public class ThreadTcp implements Runnable{
 						Dd+=rs.getString("ArriveTime");
 						Dd+=Packet.TINYDELIM;
 						Dd+=Packet.SMALLDELIM;
-					}
+					//}
 				 }
 				mss_ack.setListNum(DCount);
 				mss_ack.setlist(Dd);
