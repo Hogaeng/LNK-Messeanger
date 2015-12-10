@@ -232,7 +232,6 @@ public class ThreadTcp implements Runnable{
 						t.printStackTrace();
 					}
 				break;
-				
 			case Packet.GIVEMEM_REQ:
 				System.out.println("GiveMem REQ recevied");
 				GiveMemReq give_req = PacketCodec.decodeGiveMemReq(src.getData());
