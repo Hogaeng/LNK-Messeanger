@@ -257,7 +257,7 @@ public class PacketCodec {
 				+ Packet.FIELD_DELIM + pk_data.getFriendName()
 				+ Packet.FIELD_DELIM
 			    + Packet.PK_DELIM;
-f
+
 		return data;
 	}
 	public static AddFriendReq decodeAddFriendReq(String pk_data){
@@ -484,14 +484,13 @@ f
 		
 		for(int i =0 ;i<num;i++){
 			Scanner s = new Scanner(arg[i]).useDelimiter(Packet.TINYDELIM);
-		for(int j =0 ;j<3;j++){
-		mau[j].setName(s.next());
+		
+		mau[i].setName(s.next());
 		s.skip(Packet.TINYDELIM);
-		mau[j].setMss(s.next());
+		mau[i].setMss(s.next());
 		s.skip(Packet.TINYDELIM);
-		mau[j].setArrtime(s.next());
-		s.skip(Packet.TINYDELIM);
-		}		
+		mau[i].setArrtime(s.next());
+		s.skip(Packet.TINYDELIM);		
 		}
 		
 		return mau;
