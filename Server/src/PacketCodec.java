@@ -172,6 +172,8 @@ public class PacketCodec {
 		s.skip(Packet.FIELD_DELIM);
 		dst.setArrtime(s.next());
 		s.skip(Packet.FIELD_DELIM);
+		dst.setListNum(s.nextInt());
+		s.skip(Packet.FIELD_DELIM);
 		dst.setlist(s.next());
 
 		return dst;
